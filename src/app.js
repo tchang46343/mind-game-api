@@ -12,6 +12,12 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
+const { CLIENT_ORIGIN } = require("./config");
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN
+  })
+);
 app.get("/", (req, res) => {
   res.send("Hello World!");
   //   res.send("Hello, basic boilerplate!");
