@@ -4,12 +4,14 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
+const uuid = require("uuid/v4");
 
 const app = express();
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
 app.use(morgan(morganOption));
+app.use(express.json());
 app.use(helmet());
 app.use(cors());
 const { CLIENT_ORIGIN } = require("./config");
@@ -30,6 +32,77 @@ app.use(function validateBearerToken(req, res, next) {
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+//Ask Ali about functionality of how to send a GET request for user id stored
+//in local database
+// app.get("/newuser/:id", (req, res) => {
+//   res.json({ id: id });
+// });
+
+const users = [
+  {
+    id: "3c8da4d5-1597-46e7-baa1-e402aed70d80",
+    firstName: "sally",
+    lastName: "Student",
+    email: "tchang@gmail.com",
+    password: "password"
+  }
+];
+
+app.post("/newuser", (req, res) => {
+  //console.log(req.body);
+  const { firstName, lastName, email, password } = req.body;
+
+  //Ask Ali why post data test do not come back sucessful
+  // if (!firstName) {
+  //   return res.status(400).send("First Name required for account setup!");
+  // }
+  // if (!lastName) {
+  //   return res.status(400).send("Last Name required for account setup!");
+  // }
+
+  // if (!email) {
+  //   return res.status(400).send("Email required for account setup!");
+  // }
+  // if (!password) {
+  //   return res.status(400).send("Password required for account setup!");
+  // }
+
+  // if (firstName.length > 3 || firstName.length < 20) {
+  //   return res.status(400).send("First name must be between 3 and 20 letters");
+  // }
+
+  // if (lastName.length > 3 || lastName.length < 20) {
+  //   return res.status(400).send("Last name must be between 3 and 20 letters");
+  // }
+
+  // if (!email.match(/@/)) {
+  //   return res.status(400).send("Email must have character @ and .com");
+  // }
+
+  // if (password.length < 8 || password.length > 36) {
+  //   return res.status(400).send("Password must be between 8 and 36 characters");
+  // }
+
+  // if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
+  //   return res.status(400).send("Password must be contain at least one digit");
+  // }
+
+  const id = uuid();
+  const newUser = {
+    id,
+    firstName,
+    lastName,
+    email,
+    password
+  };
+
+  users.push(newUser);
+  res
+    .status(201)
+    .location(`http://localhost:8000/newuser/${id}`)
+    .json({ id: id });
 });
 
 app.use(function errorHandler(error, req, res, next) {
