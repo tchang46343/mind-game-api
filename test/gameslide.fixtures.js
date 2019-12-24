@@ -32,7 +32,6 @@ function makeGameSlideArray() {
     }
   ];
 }
-
-module.export = {
+module.exports = {
   makeGameSlideArray
 };

@@ -22,14 +22,14 @@ app.use(
   })
 );
 
-app.use(function validateBearerToken(req, res, next) {
-  const apiToken = process.env.API_TOKEN;
-  const authToken = req.get("Authorization");
-  if (!authToken || authToken.split(" ")[1] !== apiToken) {
-    return res.status(401).json({ error: "Unauthorized request" });
-  }
-  next();
-});
+// app.use(function validateBearerToken(req, res, next) {
+//   const apiToken = process.env.API_TOKEN;
+//   const authToken = req.get("Authorization");
+//   if (!authToken || authToken.split(" ")[1] !== apiToken) {
+//     return res.status(401).json({ error: "Unauthorized request" });
+//   }
+//   next();
+// });
 
 app.get("/", (req, res, next) => {
   const knexInstance = req.app.get("db");
@@ -48,12 +48,6 @@ app.get("/:gameslide_id", (req, res, next) => {
     })
     .catch(next);
 });
-
-//Ask Ali about functionality of how to send a GET request for user id stored
-//in local database
-// app.get("/newuser/:id", (req, res) => {
-//   res.json({ id: id });
-// });
 
 const users = [
   {
