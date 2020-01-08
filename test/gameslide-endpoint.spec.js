@@ -23,6 +23,7 @@ describe("GET /Game slide Endpoints", function() {
       it("responds with 200 and empty list", () => {
         return supertest(app)
           .get("/")
+
           .expect(200, []);
       });
     });
@@ -37,6 +38,7 @@ describe("GET /Game slide Endpoints", function() {
       it("GET /slides responds with 200 and all of the slides", () => {
         return supertest(app)
           .get("/")
+
           .expect(200, gameslidestest);
       });
 
@@ -46,6 +48,7 @@ describe("GET /Game slide Endpoints", function() {
           const expectedgameslide = gameslidestest[gameslideId - 1];
           return supertest(app)
             .get(`/${gameslideId}`)
+
             .expect(200, expectedgameslide);
         });
       });
