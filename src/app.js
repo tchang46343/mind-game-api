@@ -37,24 +37,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// app.get("/", (req, res, next) => {
-//   const knexInstance = req.app.get("db");
-//   GameSlides.getAllSlides(knexInstance)
-//     .then(slides => {
-//       res.json(slides);
-//     })
-//     .catch(next);
-// });
-
-// app.get("/:gameslide_id", (req, res, next) => {
-//   const knexInstance = req.app.get("db");
-//   GameSlides.getById(knexInstance, req.params.gameslide_id)
-//     .then(slides => {
-//       res.json(slides);
-//     })
-//     .catch(next);
-// });
-
 app.get("/newuser", (req, res) => {
   res.json(users);
 });

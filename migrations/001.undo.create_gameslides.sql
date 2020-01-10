@@ -1,1 +1,3 @@
 DROP TABLE IF EXISTS gameslides;
+
+DROP TABLE IF EXISTS newusers;

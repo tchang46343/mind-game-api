@@ -11,7 +11,8 @@ const slideparams = gameslide => ({
 });
 
 gameslideRouter.route("/gameslides").get((req, res, next) => {
-  GameSlides.getAllSlides(req.app.get("db"))
+  const knexInstance = req.app.get("db");
+  GameSlides.getAllSlides(knexInstance)
     .then(slides => {
       res.json(slides);
     })
@@ -19,7 +20,8 @@ gameslideRouter.route("/gameslides").get((req, res, next) => {
 });
 
 gameslideRouter.route("/gameslides/:gameslide_id").get((req, res, next) => {
-  GameSlides.getById(req.app.get("db"), req.params.gameslide_id)
+  const knexInstance = req.app.get("db");
+  GameSlides.getById(knexInstance, req.params.gameslide_id)
     .then(slides => {
       if (!slides) {
         return res.status(404).json({
