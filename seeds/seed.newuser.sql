@@ -1,5 +1,10 @@
-INSERT INTO newusers (firstName, lastName, email, password)
+INSERT INTO users (firstName, lastName, email, password)
 values
+
+('Terrance',
+  'Chang',
+  'tchang@gmail.com',
+  'Admin123'),
 
   ('John',
   'Doe',
@@ -17,6 +22,6 @@ values
   'thinkfulisgreat'),
 
   ('Dave',
-  'Watkins',
-  'Dave.Watkins@yahoo.com',
-  'Ross2020'),;
+  'Chang',
+  'Dave.Chang@yahoo.com',
+  'Ross2020');

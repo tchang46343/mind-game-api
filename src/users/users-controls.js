@@ -2,7 +2,7 @@ const newUsers = {
   getAllUsers(knex) {
     return knex.select("*").from("users");
   },
-  insertSlides(knex, user) {
+  insertUser(knex, user) {
     return knex
       .insert(user)
       .into("users")
@@ -18,7 +18,7 @@ const newUsers = {
       .where("id", id)
       .first();
   },
-  deleteSlide(knex, id) {
+  deleteUser(knex, id) {
     return knex("users")
       .where({ id })
       .delete();

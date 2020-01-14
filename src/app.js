@@ -7,6 +7,7 @@ const { NODE_ENV } = require("./config");
 // const GameSlides = require("./gslides/game-slides");
 // const uuid = require("uuid/v4");
 const gameRouter = require("./gslides/game-router");
+const userRouter = require("./users/users-router");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(
 //   next();
 // });
 app.use(gameRouter);
+app.use(userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
