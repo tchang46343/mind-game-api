@@ -2,9 +2,9 @@ const newUsers = {
   getAllUsers(knex) {
     return knex.select("*").from("users");
   },
-  insertUser(knex, user) {
+  insertUser(knex, newUserSetup) {
     return knex
-      .insert(user)
+      .insert(newUserSetup)
       .into("users")
       .returning("*")
       .then(rows => {
