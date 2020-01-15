@@ -35,95 +35,23 @@ app.use(
 app.use(gameRouter);
 app.use(userRouter);
 
+app.get("/users/:userId", (req, res, next) => {
+  const knexInstance = req.app.get("db");
+  newUsers
+    .getById(knexInstance, req.params.userId)
+    .then(users => {
+      if (!users) {
+        return res.status(404).json({
+          error: { message: `User doesn't exist` }
+        });
+      }
+      res.json(users);
+    })
+    .catch(next);
+});
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
-});
-
-app.get("/newuser", (req, res) => {
-  res.json(users);
-});
-
-const users = [
-  {
-    id: "3c8da4d5-1597-46e7-baa1-e402aed70d80",
-    firstName: "sally",
-    lastName: "Student",
-    email: "SallyStudent@gmail.com",
-    password: "password"
-  }
-];
-
-app.post("/newuser", (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-  const emailSyntax1 = "@";
-  const emailSyntax2 = ".com";
-
-  if (!firstName) {
-    return res.status(400).send("First Name required for account setup!");
-  }
-  if (!lastName) {
-    return res.status(400).send("Last Name required for account setup!");
-  }
-
-  if (!email) {
-    return res.status(400).send("Email required for account setup!");
-  }
-  if (!password) {
-    return res.status(400).send("Password required for account setup!");
-  }
-
-  if (firstName.length < 3 || firstName.length > 20) {
-    return res
-      .status(400)
-      .send("First name must be between than 3 and 20 letters");
-  }
-
-  if (lastName.length < 3 || firstName.length > 20) {
-    return res.status(400).send("Last name must be between 3 and 20 letters");
-  }
-
-  if (!email.includes(emailSyntax1)) {
-    return res.status(400).send("Email must have character @.");
-  }
-  if (!email.includes(emailSyntax2)) {
-    return res.status(400).send("Email must have character .com");
-  }
-
-  if (password.length < 8 || password.length > 36) {
-    return res.status(400).send("Password must be between 8 and 36 characters");
-  }
-
-  if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
-    return res.status(400).send("Password must be contain at least one digit");
-  }
-
-  const id = uuid();
-  const newUser = {
-    id,
-    firstName,
-    lastName,
-    email,
-    password
-  };
-
-  users.push(newUser);
-  res
-    .status(201)
-    .location(`http://localhost:8000/newuser/${id}`)
-    .json(newUser);
-  //.json({ id: id });
-});
-
-app.delete("/newuser:userId", (req, res) => {
-  const userId = req.params;
-  const index = users.findIndex(u => u.id === userId);
-
-  if (index === -1) {
-    return res.status(404).send("User not found");
-  }
-
-  users.splice(index, 1);
-  res.send("Deleted");
 });
 
 app.use(function errorHandler(error, req, res, next) {
