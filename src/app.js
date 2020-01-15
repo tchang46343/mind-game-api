@@ -35,21 +35,6 @@ app.use(
 app.use(gameRouter);
 app.use(userRouter);
 
-app.get("/users/:userId", (req, res, next) => {
-  const knexInstance = req.app.get("db");
-  newUsers
-    .getById(knexInstance, req.params.userId)
-    .then(users => {
-      if (!users) {
-        return res.status(404).json({
-          error: { message: `User doesn't exist` }
-        });
-      }
-      res.json(users);
-    })
-    .catch(next);
-});
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

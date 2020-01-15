@@ -28,6 +28,13 @@ userRouter
   .post(jsonParser, (req, res, next) => {
     const { firstname, lastname, email, password } = req.body;
     const newUserSetup = { firstname, lastname, email, password };
+
+    for (const [key, value] of Object.entries(newUserSetup))
+      if (value == null)
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` }
+        });
+
     userControls
       .insertUser(req.app.get("db"), newUserSetup)
       .then(user => {
@@ -48,7 +55,7 @@ userRouter
       .then(users => {
         if (!users) {
           return res.status(404).json({
-            error: { message: `User not found.` }
+            error: { message: `User doesn't exist.` }
           });
         }
         res.users = users;

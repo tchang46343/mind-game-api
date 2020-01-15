@@ -49,7 +49,7 @@ describe.only("User Endpoints", function() {
         const userId = 123456;
         return supertest(app)
           .get(`/users/${userId}`)
-          .expect(404, { error: { message: `User not found.` } });
+          .expect(404, { error: { message: `User doesn't exist.` } });
       });
     });
 
@@ -65,6 +65,55 @@ describe.only("User Endpoints", function() {
         return supertest(app)
           .get(`/users/${userId}`)
           .expect(200, expectedUser);
+      });
+    });
+  });
+
+  describe(`POST /users`, () => {
+    it(`creates a user, responding with 201  and the new article`, function() {
+      const newUser = {
+        firstname: "Tom",
+        lastname: "smith",
+        email: "tom.smith@tcmail.com",
+        password: "tsmith"
+      };
+      return supertest(app)
+        .post("/users")
+        .send(newUser)
+        .expect(201)
+        .expect(res => {
+          expect(res.body.firstname).to.eql(newUser.firstname);
+          expect(res.body.lastname).to.eql(newUser.lastname);
+          expect(res.body.email).to.eql(newUser.email);
+          expect(res.body.password).to.eql(newUser.password);
+          expect(res.body).to.have.property("id");
+          expect(res.header.location).to.eql(`/users/${res.body.id}`);
+        })
+        .then(postRes =>
+          supertest(app)
+            .get(`/users/${postRes.body.id}`)
+            .expect(postRes.body)
+        );
+    });
+    const requiredFields = ["firstname", "lastname", "email", "password"];
+
+    requiredFields.forEach(field => {
+      const newUser = {
+        firstname: "James",
+        lastname: "Watt",
+        email: "jwatt@tcmail.com",
+        password: "jjwatt"
+      };
+
+      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
+        delete newUser[field];
+
+        return supertest(app)
+          .post("/users")
+          .send(newUser)
+          .expect(400, {
+            error: { message: `Missing '${field}' in request body` }
+          });
       });
     });
   });
