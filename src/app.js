@@ -8,6 +8,7 @@ const { NODE_ENV } = require("./config");
 // const uuid = require("uuid/v4");
 const gameRouter = require("./gslides/game-router");
 const userRouter = require("./users/users-router");
+const authenRouter = require("./authentication/authentication-router");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(
 //   }
 //   next();
 // });
+app.use("/auth", authenRouter);
 app.use(gameRouter);
 app.use(userRouter);
 
