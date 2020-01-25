@@ -17,7 +17,16 @@ const serializeuserParams = user => ({
 });
 
 userRouter
-  .route("/users")
+  .route("/")
+  .get((req, res, next) => {
+    const knexInstance = req.app.get("db");
+    userControls
+      .getAllUsers(knexInstance)
+      .then(users => {
+        res.json(users.map(serializeuserParams));
+      })
+      .catch(next);
+  })
 
   .post((req, res, next) => {
     const knex = req.app.get("db");
@@ -32,7 +41,7 @@ userRouter
       }
     }
 
-    AuthenService.getUserByUserCredential(knex, username)
+    AuthenService.getUserByUserCredential(knex, email)
       .then(user => {
         if (user) {
           return res.status(400).json({
@@ -40,13 +49,14 @@ userRouter
           });
         }
 
-        UsersControls.hashPassword(password)
+        userControls
+          .hashPassword(password)
           .then(hashedPassword => {
             const user = {
               email,
               password: hashedPassword
             };
-            return UsersControls.insertUser(knex, user);
+            return userControls.insertUser(knex, user);
           })
           .then(user => {
             return res
@@ -59,33 +69,23 @@ userRouter
       .catch(next);
   });
 
-usersRouter
+userRouter
   .route("/:id")
   .get((req, res, next) => {
     const knex = req.app.get("db");
 
-    UsersService.getUserById(knex, req.params.id).then(user => {
+    userControls.getById(knex, req.params.id).then(user => {
       if (!user) {
         return res.status(404).json({
           error: `User not found`
         });
       }
 
-      return res.json(serializeUser(user));
+      return res.json(serializeuserParams(user));
     });
   })
 
   // module.exports = usersRouter;
-
-  .get((req, res, next) => {
-    const knexInstance = req.app.get("db");
-    userControls
-      .getAllUsers(knexInstance)
-      .then(users => {
-        res.json(users.map(serializeuserParams));
-      })
-      .catch(next);
-  })
 
   .post(jsonParser, (req, res, next) => {
     const { firstname, lastname, email, password } = req.body;

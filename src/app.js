@@ -34,8 +34,8 @@ app.use(
 //   next();
 // });
 app.use("/auth", authenRouter);
-app.use(gameRouter);
-app.use(userRouter);
+app.use("/gameslides", gameRouter);
+app.use("/users", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
