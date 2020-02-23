@@ -4,8 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
-// const GameSlides = require("./gslides/game-slides");
-// const uuid = require("uuid/v4");
+//const GameSlides = require("./gslides/game-slides");
 const gameRouter = require("./gslides/game-router");
 const userRouter = require("./users/users-router");
 const authenRouter = require("./authentication/authentication-router");
@@ -33,8 +32,9 @@ app.use(
 //   }
 //   next();
 // });
-app.use("/auth", authenRouter);
+
 app.use("/gameslides", gameRouter);
+app.use("/auth", authenRouter);
 app.use("/users", userRouter);
 
 app.get("/", (req, res) => {

@@ -85,8 +85,6 @@ userRouter
     });
   })
 
-  // module.exports = usersRouter;
-
   .post(jsonParser, (req, res, next) => {
     const { firstname, lastname, email, password } = req.body;
     const newUserSetup = { firstname, lastname, email, password };

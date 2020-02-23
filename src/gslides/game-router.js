@@ -10,7 +10,7 @@ const slideparams = gameslide => ({
   imageurl: gameslide.imageurl
 });
 
-gameslideRouter.route("/gameslides").get((req, res, next) => {
+gameslideRouter.route("/").get((req, res, next) => {
   const knexInstance = req.app.get("db");
   GameSlides.getAllSlides(knexInstance)
     .then(slides => {

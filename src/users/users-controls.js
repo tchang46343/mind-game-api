@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 const newUsers = {
   getAllUsers(knex) {
     return knex.select("*").from("users");
@@ -22,9 +24,11 @@ const newUsers = {
     return knex("users")
       .where({ id })
       .delete();
-  }
+  },
 
-  //add hash password (Server)
+  hashPassword(password) {
+    return bcrypt.hash(password, 12);
+  }
 
   //after login have the server create the token save for the current user session (Client/Server)
   //after token receive save the token in the window object (Client/Server)
