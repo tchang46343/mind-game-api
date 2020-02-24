@@ -31,7 +31,7 @@ userRouter
   .post((req, res, next) => {
     const knex = req.app.get("db");
 
-    const { email, password } = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     for (const key of ["email", "password"]) {
       if (!req.body[key]) {
@@ -53,6 +53,8 @@ userRouter
           .hashPassword(password)
           .then(hashedPassword => {
             const user = {
+              firstname,
+              lastname,
               email,
               password: hashedPassword
             };
