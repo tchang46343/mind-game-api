@@ -12,7 +12,7 @@ const serializeuserParams = user => ({
   id: user.id,
   firstname: user.firstname,
   lastname: user.lastname,
-  email: xss(user.email),
+  email: user.email,
   password: xss(user.password)
 });
 
@@ -43,7 +43,7 @@ userRouter
 
     AuthenService.getUserByUserCredential(knex, email)
       .then(user => {
-        if (user) {
+        if (!user) {
           return res.status(400).json({
             error: `Email already taken`
           });
@@ -64,7 +64,7 @@ userRouter
             return res
               .status(201)
               .location(path.posix.join(req.originalUrl, `/${email.id}`))
-              .json(serializeUser(user));
+              .json(serializeuserParams(user));
           })
           .catch(next);
       })
