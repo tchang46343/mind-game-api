@@ -29,11 +29,6 @@ const newUsers = {
   hashPassword(password) {
     return bcrypt.hash(password, 12);
   }
-
-  //after login have the server create the token save for the current user session (Client/Server)
-  //after token receive save the token in the window object (Client/Server)
-  //Logout will need to empty out the window object (Client)
-  //login update state to active user and logout update state to remove user (Client)
 };
 
 module.exports = newUsers;

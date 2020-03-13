@@ -138,5 +138,3 @@ userRouter
   });
 
 module.exports = userRouter;
-
-///ask ali on how to renumber id once data is deleted
