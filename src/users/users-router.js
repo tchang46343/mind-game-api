@@ -42,12 +42,12 @@ userRouter
     }
 
     AuthenService.getUserByUserCredential(knex, email)
-      .then(user => {
-        if (!user) {
-          return res.status(400).json({
-            error: `Email already taken`
-          });
-        }
+      // .then(user => {
+      //   if (!user) {
+      //     return res.status(400).json({
+      //       error: `Email already taken`
+      //     });
+      //   }
 
         userControls
           .hashPassword(password)
