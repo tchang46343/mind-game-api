@@ -9,6 +9,8 @@ authenRouter.post("/login", (req, res, next) => {
   const { email, password } = req.body;
   const user = { email, password };
 
+  console.log(user);
+
   for (const [key, value] of Object.entries(user)) {
     if (value === null) {
       return res.status(400).json({
