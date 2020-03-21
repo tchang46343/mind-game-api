@@ -26,6 +26,7 @@ authenRouter.post("/login", (req, res, next) => {
           error: `Email does not exist`
         });
       }
+      console.log(dbUser, user);
 
       AuthenService.comparePassword(user.password, dbUser.password)
         .then(passwordsMatch => {
