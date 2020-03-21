@@ -19,7 +19,6 @@ authenRouter.post("/login", (req, res, next) => {
     }
   }
 
-  let dbUser;
   AuthenService.getUserByUserCredential(knex, email)
     .then(dbUser => {
       if (!dbUser) {
