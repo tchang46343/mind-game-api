@@ -9,8 +9,6 @@ authenRouter.post("/login", (req, res, next) => {
   const { email, password } = req.body;
   const user = { email, password };
 
-  console.log(user);
-
   for (const [key, value] of Object.entries(user)) {
     if (value === null) {
       return res.status(400).json({
@@ -26,7 +24,6 @@ authenRouter.post("/login", (req, res, next) => {
           error: `Email does not exist`
         });
       }
-      console.log(dbUser, user);
 
       AuthenService.comparePassword(user.password, dbUser.password)
         .then(passwordsMatch => {
@@ -35,6 +32,7 @@ authenRouter.post("/login", (req, res, next) => {
               error: `Please try to enter password again`
             });
           }
+          console.log(dbUser, passwordsMatch);
           res.send({
             authToken: AuthenService.createJWT(dbUser.email, {
               email_id: dbUser.id
